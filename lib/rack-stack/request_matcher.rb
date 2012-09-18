@@ -24,7 +24,14 @@ class RackStack
         indifferent_eval request, &@matcher
       else
         @matcher.all? do |request_attribute, value|
-          value === request.send(request_attribute)
+          case value
+          when String
+            value === request.send(request_attribute)
+          when Array
+            value.include? request.send(request_attribute)
+          when Regexp
+            request.send(request_attribute) =~ value
+          end
         end
       end
     end

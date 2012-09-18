@@ -27,4 +27,11 @@ describe RackStack::RequestMatcher do
     matcher.matches?(env_for "http://www.different.com/").should be_false
   end
 
+  it "when: { host: [twitter.com, www.twitter.com] }" do
+    matcher = RackStack::RequestMatcher.new :host => [ 'twitter.com', 'www.twitter.com' ]
+
+    matcher.matches?(env_for "http://twitter.com/").should be_true
+    matcher.matches?(env_for "http://www.twitter.com/").should be_true
+    matcher.matches?(env_for "http://www.different.com/").should be_false
+  end
 end
